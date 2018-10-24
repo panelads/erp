@@ -48,21 +48,28 @@ public class CarregaDados extends HttpServlet {
                 out.print(json);
             }
             else if(opcao.equals("grava-item")){
-                Connection con = Conecta.getConexao();
-                String sql = "INSERT into item (nome, descricao, preco, marca, quantidadeTotal, EstoqueMin, EstoqueMax, tipo_item_id_tipo)"
-                        + " VALUES (?,?,?,?,?,?,?,?)";
-                PreparedStatement pstm = con.prepareStatement(sql);
-                pstm.setString(1, request.getParameter("nome"));
-                pstm.setString(2, request.getParameter("tipo"));
-                pstm.setString(3, request.getParameter("descr"));
-                pstm.setString(4, request.getParameter("marca"));
-                pstm.setString(5, request.getParameter("preco"));
-                pstm.setString(6, request.getParameter("qtde"));
-                pstm.setString(7, request.getParameter("qtdeMin"));
-                pstm.setString(8, request.getParameter("qtdeMax"));
-                
-                pstm.execute();
-                pstm.close();
+                try{
+                    Connection con = Conecta.getConexao();
+                    String sql = "INSERT INTO item (nome, descricao, preco, marca, quantidadeTotal, EstoqueMin, EstoqueMax, tipo_item_id_tipo)"
+                            + " VALUES (?,?,?,?,?,?,?,?)";
+                    PreparedStatement pstm = con.prepareStatement(sql);
+                    pstm.setString(1, request.getParameter("nome"));
+                    pstm.setString(2, request.getParameter("descr"));
+                    pstm.setDouble(3, Double.parseDouble(request.getParameter("preco")));
+                    pstm.setString(4, request.getParameter("marca"));
+                    pstm.setInt(5, Integer.parseInt(request.getParameter("qtde")));
+                    pstm.setInt(6, Integer.parseInt(request.getParameter("qtdeMin")));
+                    pstm.setInt(7, Integer.parseInt(request.getParameter("qtdeMax")));
+                    pstm.setInt(8, Integer.parseInt(request.getParameter("tipo")));
+
+                    pstm.execute(sql);
+                    pstm.close();
+                    out.print("Sucesso");
+                    
+                    
+                }catch(Exception ex){
+                    out.print("Erro "+ex.getMessage());
+                }
             }
         }
     }

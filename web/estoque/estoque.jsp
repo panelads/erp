@@ -249,7 +249,7 @@ function carregaDados(id){
     if(id === 'novo-item'){
         $.getJSON("../CarregaDados", {opcao: id})
         .success(function(json){
-            console.log(json.lenght);
+            console.log(json);
             var $tipo = '<option value="-1">Selecione o tipo</option>';
             json.dados.forEach(function(a,index){
                 $tipo += '<option value="'+a.id+'">'+a.nome+'</option>';
@@ -281,13 +281,7 @@ $(function(){
         else{
             $.getJSON("../CarregaDados", {opcao: 'grava-item', nome:nome, tipo:tipo, descr:descricao, marca:marca, preco:preco, qtde:qtde, qtdeMin:qtde_minima, qtdeMax:qtde_maxima})
             .success(function(json){
-                console.log(json.lenght);
-                var $tipo = '<option value="-1">Selecione o tipo</option>';
-                json.dados.forEach(function(a,index){
-                    $tipo += '<option value="'+a.id+'">'+a.nome+'</option>';
-                })
-                console.log($tipo);
-                $('#tipo_novo_item').html($tipo);
+                console.log(json);
             })
             .error(function(e){
                 console.log(e);
