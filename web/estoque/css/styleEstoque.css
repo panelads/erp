@@ -1,0 +1,66 @@
+/* ------Menu-Lateral------*/
+.dropDown{
+   text-align: left;
+   display: none;
+
+}
+.dropDown li a{
+    padding: 5px 35px 5px 0;
+    font-size: 12px;
+    color: #5aaad7;
+    padding-left: 30px;
+    cursor: pointer;
+}
+.dropDown li a:hover{
+    color: snow;
+}
+
+.menuDown-estoque li a{
+    cursor: pointer;
+}
+/* ------Estoque-Home------*/
+#estoque{
+    display: flex;
+    flex-wrap:wrap;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.h2-estoque{
+     flex-basis: 100%;
+}
+.estoque-home{
+    padding: 5px 25px;   
+    border-radius: 20px;
+    border-right: solid 1px  #212121;
+    border-left: solid 1px  #212121;
+    background: #3c3c3c;
+}
+.ul-estoque-home{
+    display: inline !important;
+}
+.li-estoque-home{
+    font-weight: bold;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 5px;
+}
+.li-estoque-home a {
+    color: #fff;
+}
+.menuDown{
+    cursor:pointer;
+}
+div.estoque-home ul li{
+   list-style:none;
+}
+
+/* ------Novo-item------*/
+.container-estoque{
+    display: none;
+    text-decoration: none;
+}
+.estoque-atual-form{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
