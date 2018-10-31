@@ -1,13 +1,14 @@
 package Negocio;
 
+import Basic.NovoItem;
 import Dao.Conecta;
+import Dao.Dados;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -48,28 +49,48 @@ public class CarregaDados extends HttpServlet {
                 out.print(json);
             }
             else if(opcao.equals("grava-item")){
+                NovoItem item = new NovoItem();
+                item.setNome(request.getParameter("nome"));
+                item.setMarca(request.getParameter("marca"));
+                item.setDescricao(request.getParameter("descr"));
+                item.setPreco(Double.parseDouble(request.getParameter("preco")));
+                item.setQtde(Integer.parseInt(request.getParameter("qtde")));
+                item.setQtdeMin(Integer.parseInt(request.getParameter("qtdeMin")));
+                item.setQtdeMax(Integer.parseInt(request.getParameter("qtdeMax")));
+                item.setTipo(Integer.parseInt(request.getParameter("tipo")));
+                Dados dados = new Dados();
+                out.print(dados.inserirNovoItem(item));
+                
+                /*
                 try{
+                    Double preco = Double.parseDouble(request.getParameter("preco"));
+                    int qtde = Integer.parseInt(request.getParameter("qtde"));
+                    int qtdeMin = Integer.parseInt(request.getParameter("qtdeMin"));
+                    int qtdeMax = Integer.parseInt(request.getParameter("qtdeMax"));
+                    int tipo = Integer.parseInt(request.getParameter("tipo"));
+                    
                     Connection con = Conecta.getConexao();
-                    String sql = "INSERT INTO item (nome, descricao, preco, marca, quantidadeTotal, EstoqueMin, EstoqueMax, tipo_item_id_tipo)"
-                            + " VALUES (?,?,?,?,?,?,?,?)";
+                    String sql = "INSERT INTO item (nome, descricao, preco, marca, quantidadeTotal, EstoqueMin, EstoqueMax, tipo_item_id_tipo) VALUES (?,?,?,?,?,?,?,?)";
                     PreparedStatement pstm = con.prepareStatement(sql);
-                    pstm.setString(1, request.getParameter("nome"));
-                    pstm.setString(2, request.getParameter("descr"));
-                    pstm.setDouble(3, Double.parseDouble(request.getParameter("preco")));
-                    pstm.setString(4, request.getParameter("marca"));
-                    pstm.setInt(5, Integer.parseInt(request.getParameter("qtde")));
-                    pstm.setInt(6, Integer.parseInt(request.getParameter("qtdeMin")));
-                    pstm.setInt(7, Integer.parseInt(request.getParameter("qtdeMax")));
-                    pstm.setInt(8, Integer.parseInt(request.getParameter("tipo")));
+                    
+                    pstm.setString(1, nome);
+                    pstm.setString(2, descr);
+                    pstm.setDouble(3, preco);
+                    pstm.setString(4, marca);
+                    pstm.setInt(5, qtde);
+                    pstm.setInt(6, qtdeMin);
+                    pstm.setInt(7, qtdeMax);
+                    pstm.setInt(8, tipo);
 
                     pstm.execute(sql);
                     pstm.close();
-                    out.print("Sucesso");
+                    out.print(request.getParameter("nome"));
                     
                     
                 }catch(Exception ex){
                     out.print("Erro "+ex.getMessage());
                 }
+                */
             }
         }
     }

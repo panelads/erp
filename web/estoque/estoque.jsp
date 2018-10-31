@@ -105,7 +105,7 @@
                             <td><input type="number" min="0" class="form-control" id="quantidade_novo_item" placeholder="Quantidade do Produto" novo-item></td>
                         </tr>
                         <tr>
-                            <td><label for="qtde_minima_novo_item">Qyde. Miníma</label></td>
+                            <td><label for="qtde_minima_novo_item">Qtde. Miníma</label></td>
                             <td><input type="number" min="0" class="form-control" id="qtde_minima_novo_item" placeholder="Quantidade Miníma" novo-item></td>
                             <td><label for="qtde_maxima_novo_item">Qtde. Máxima</label></td>
                             <td><input type="number" min="0" class="form-control" id="qtde_maxima_novo_item" placeholder="Quantidade Máxima" novo-item></td>
@@ -247,10 +247,12 @@ function mostraConteudo(id){
 
 function carregaDados(id){
     if(id === 'novo-item'){
-        $.getJSON("../CarregaDados", {opcao: id})
-        .success(function(json){
+        var $tipo = '<option value="-1">Carregando...</option>';
+        $('#tipo_novo_item').html($tipo);
+
+        $.getJSON("../CarregaDados", {opcao: id}).success(function(json){
             console.log(json);
-            var $tipo = '<option value="-1">Selecione o tipo</option>';
+            $tipo = '<option value="-1">Selecione o tipo</option>';
             json.dados.forEach(function(a,index){
                 $tipo += '<option value="'+a.id+'">'+a.nome+'</option>';
             })
@@ -282,6 +284,12 @@ $(function(){
             $.getJSON("../CarregaDados", {opcao: 'grava-item', nome:nome, tipo:tipo, descr:descricao, marca:marca, preco:preco, qtde:qtde, qtdeMin:qtde_minima, qtdeMax:qtde_maxima})
             .success(function(json){
                 console.log(json);
+        alert(json.responseText);
+        /
+                if(json == 'Sucesso'){
+                    alert("Item gravado com sucesso!!!");
+                    $("#limpar_novo_item").click();
+                }
             })
             .error(function(e){
                 console.log(e);

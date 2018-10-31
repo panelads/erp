@@ -1,4 +1,5 @@
 package Dao;
+import Basic.NovoItem;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,37 +11,37 @@ import org.json.simple.JSONObject;
  * @author Duilor
  */
 public class Dados {
-    /*
-    public String inserirAluno(novoItem item){
+    
+    public String inserirNovoItem(NovoItem item){
         String resp;
         try{
-            Connection con = Conecta.getConexao(); // método que faz a conexão 
-            String sql = "INSERT INTO DADOS(RGM,NOME,NOTA1,NOTA2) VALUES(?,?,?,?)"; 
-            PreparedStatement ps = con.prepareStatement(sql);
+            Connection con = Conecta.getConexao();
+            String sql = "INSERT INTO item (nome, descricao, preco, marca, quantidadeTotal, EstoqueMin, EstoqueMax, tipo_item_id_tipo) "
+                    + "VALUES (? , ? , ? , ? , ? , ? , ? , ?)";
+            PreparedStatement pstm = con.prepareStatement(sql);
+            
+            pstm.setString(1, item.getNome());
+            pstm.setString(2, item.getDescricao());
+            pstm.setDouble(3, item.getPreco());
+            pstm.setString(4, item.getMarca());
+            pstm.setInt(5, item.getQtde());
+            pstm.setInt(6, item.getQtdeMin());
+            pstm.setInt(7, item.getQtdeMax());
+            pstm.setInt(8, item.getTipo());
 
-            ps.setString(1, aluno.getRgm());
-            ps.setString(2, aluno.getNome());
-            ps.setFloat(3, aluno.getNota1());
-            ps.setFloat(4, aluno.getNota2());
-             
-            
-            
-            ps.execute(); 
-            ps.close(); 
-            con.close(); 
-            
-            resp = "Dados salvos com sucesso!!!";
-            
+            pstm.executeUpdate();
+            pstm.close();
+            con.close();
+            resp = "Sucesso";
+
         }catch(Exception ex){
-            
-            resp = "Erro " + ex.getMessage();
-        
+            resp = "Erro "+ex.getMessage();
         }
         return resp;
     }
     
-    */
     
+    /*
     public void CarregaTipo(){
         try{
             Connection con = Conecta.getConexao();
@@ -63,7 +64,7 @@ public class Dados {
         //print.out(json);
     }
     
-    /*
+    
     public ArrayList<Aluno> getAlunos(){
         ArrayList<Aluno> lista = new ArrayList<>();
         try{
