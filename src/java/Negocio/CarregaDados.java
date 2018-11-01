@@ -53,7 +53,7 @@ public class CarregaDados extends HttpServlet {
                 item.setNome(request.getParameter("nome"));
                 item.setMarca(request.getParameter("marca"));
                 item.setDescricao(request.getParameter("descr"));
-                item.setPreco(Double.parseDouble(request.getParameter("preco")));
+                item.setPreco(Double.parseDouble(request.getParameter("preco").replace(".", "").replace(",",".")));
                 item.setQtde(Integer.parseInt(request.getParameter("qtde")));
                 item.setQtdeMin(Integer.parseInt(request.getParameter("qtdeMin")));
                 item.setQtdeMax(Integer.parseInt(request.getParameter("qtdeMax")));

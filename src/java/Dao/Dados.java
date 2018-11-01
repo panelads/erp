@@ -32,7 +32,7 @@ public class Dados {
             pstm.executeUpdate();
             pstm.close();
             con.close();
-            resp = "Sucesso";
+            resp = "1";
 
         }catch(Exception ex){
             resp = "Erro "+ex.getMessage();

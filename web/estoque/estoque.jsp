@@ -86,7 +86,7 @@
                         <tr>
                             <td><label for="tipo_novo_item">Tipo</label></td>
                             <td colspan="3">
-                                <select class="form-control" id="tipo_novo_item">
+                                <select class="form-control select2" id="tipo_novo_item">
                                 </select>
                             </td>
                         </tr>
@@ -237,7 +237,6 @@
 <div id="popup"></div>
 
 <%@include file="include/plugins.jsp" %>
-    
 
 <script>
 function mostraConteudo(id){
@@ -266,7 +265,12 @@ function carregaDados(id){
 }
 
 $(function(){
- 
+
+    //Datemask dd/mm/yyyy
+    //$('#preco_novo_item').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+
+    //colocar função para apenas numero e mascara para valor
+
     $("#gravar_novo_item").click(function(){
         var nome = preenchimentoObrigatorio('nome_novo_item',1);
         var tipo = preenchimentoObrigatorio('tipo_novo_item',2);
@@ -284,12 +288,13 @@ $(function(){
             $.getJSON("../CarregaDados", {opcao: 'grava-item', nome:nome, tipo:tipo, descr:descricao, marca:marca, preco:preco, qtde:qtde, qtdeMin:qtde_minima, qtdeMax:qtde_maxima})
             .success(function(json){
                 console.log(json);
-        alert(json.responseText);
-        /
-                if(json == 'Sucesso'){
+        
+                if(json == '1'){
                     alert("Item gravado com sucesso!!!");
                     $("#limpar_novo_item").click();
                 }
+                
+                
             })
             .error(function(e){
                 console.log(e);
