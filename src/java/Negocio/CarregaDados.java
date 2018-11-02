@@ -32,21 +32,8 @@ public class CarregaDados extends HttpServlet {
             String opcao = request.getParameter("opcao");
 
             if(opcao.equals("novo-item")){
-                Connection con = Conecta.getConexao();
-                String sql = "SELECT id_tipo, nome_tipo FROM tipo_item ORDER BY nome_tipo";
-                PreparedStatement ps = con.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery();
-
-                JSONObject json = new JSONObject();
-                JSONArray array = new JSONArray();
-                while(rs.next()){
-                    JSONObject item = new JSONObject();
-                    item.put("id", rs.getInt("id_tipo"));
-                    item.put("nome", rs.getString("nome_tipo"));
-                    array.add(item);  
-                }
-                json.put("dados", array);
-                out.print(json);
+                Dados dados = new Dados();
+                out.print(dados.CarregaTipo());
             }
             else if(opcao.equals("grava-item")){
                 NovoItem item = new NovoItem();
@@ -60,38 +47,18 @@ public class CarregaDados extends HttpServlet {
                 item.setTipo(Integer.parseInt(request.getParameter("tipo")));
                 Dados dados = new Dados();
                 out.print(dados.inserirNovoItem(item));
-                
-                /*
-                try{
-                    Double preco = Double.parseDouble(request.getParameter("preco"));
-                    int qtde = Integer.parseInt(request.getParameter("qtde"));
-                    int qtdeMin = Integer.parseInt(request.getParameter("qtdeMin"));
-                    int qtdeMax = Integer.parseInt(request.getParameter("qtdeMax"));
-                    int tipo = Integer.parseInt(request.getParameter("tipo"));
-                    
-                    Connection con = Conecta.getConexao();
-                    String sql = "INSERT INTO item (nome, descricao, preco, marca, quantidadeTotal, EstoqueMin, EstoqueMax, tipo_item_id_tipo) VALUES (?,?,?,?,?,?,?,?)";
-                    PreparedStatement pstm = con.prepareStatement(sql);
-                    
-                    pstm.setString(1, nome);
-                    pstm.setString(2, descr);
-                    pstm.setDouble(3, preco);
-                    pstm.setString(4, marca);
-                    pstm.setInt(5, qtde);
-                    pstm.setInt(6, qtdeMin);
-                    pstm.setInt(7, qtdeMax);
-                    pstm.setInt(8, tipo);
-
-                    pstm.execute(sql);
-                    pstm.close();
-                    out.print(request.getParameter("nome"));
-                    
-                    
-                }catch(Exception ex){
-                    out.print("Erro "+ex.getMessage());
-                }
-                */
             }
+            else if(opcao.equals("grava-tipo-material")){
+                String tipo_material = request.getParameter("tipo_material");
+                Dados dados = new Dados();
+                out.print(dados.inserirTipoMaterial(tipo_material));
+            }
+            else if(opcao.equals("exclui-tipo-material")){
+                int id = Integer.parseInt(request.getParameter("id"));
+                Dados dados = new Dados();
+                out.print(dados.excluirTipoMaterial(id));
+            }
+                    
         }
     }
 

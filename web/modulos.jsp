@@ -5,7 +5,7 @@
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 <head>
     <meta charset="utf-8">
-    <title>Livros Fiscais</title>
+    <title>Panela ADS - Módulos</title>
 
     <link rel="stylesheet" href="css/all.css">
 

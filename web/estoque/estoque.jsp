@@ -2,7 +2,7 @@
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 <head>
     <meta charset="utf-8">
-    <title>Estoque</title>
+    <title>Panela ADS - Módulo Estoque</title>
     <%@include file="include/style.jsp" %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Grupo 11 - Estoque" />
@@ -27,7 +27,7 @@
                     <li><a onclick="mostraConteudo('separacao')">Separação</a></li>
                     <li><a onclick="mostraConteudo('reposicionar')">Reposicionar</a></li>
                     <li><a onclick="mostraConteudo('inventario')">Inventário</a></li>
-                    <li><a onclick="mostraConteudo('configurar-estoque')">Configurar Estoque</a></li>
+                    <li><a onclick="mostraConteudo('configurar-estoque'); carregaDadosConfig()">Configurar Estoque</a></li>
                 </div>
             </ul>
         </div>
@@ -197,7 +197,48 @@
     </section>
 
     <section id="configurar-estoque" class="container-estoque">
-        <h1>Configurar Estoque</h1>
+        <div class="col-md-12">
+            <div class="border-titulo">
+                <h2>Configurar Estoque</h2>
+                <br>
+                
+                <div class="col-md-12 p-30 table-responsive">
+                    <table class="table table-condensed">
+                        <tr>
+                            <td><label for="conf_tipo_material">Tipo de Material</label></td>
+                            <td><input type="text" class="form-control" id="conf_tipo_material" placeholder="Informe o Tipo de Material" conf-endereco></td>
+                            <td><button type="button" class="btn btn-verde btn-hover mr-10" id="gravar_tipo_material">GRAVAR</button></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">Tipo(s) de Material Cadastrdo(s)</td
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <table class="table table-bordered" id="table-tipo-material">
+                                    <thead>
+                                        <tr>
+                                            <th>Descrição</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        
+                    </table>
+                </div>
+
+                <div class="clearfix"></div>
+
+            </div>
+
+        </div>
+        
+        
+        
     </section>
 
     <section id="reposicionar" class="container-estoque">
@@ -245,7 +286,7 @@ function mostraConteudo(id){
 }
 
 function carregaDados(id){
-    if(id === 'novo-item'){
+    if(id == 'novo-item'){
         var $tipo = '<option value="-1">Carregando...</option>';
         $('#tipo_novo_item').html($tipo);
 
@@ -255,13 +296,39 @@ function carregaDados(id){
             json.dados.forEach(function(a,index){
                 $tipo += '<option value="'+a.id+'">'+a.nome+'</option>';
             })
-            console.log($tipo);
             $('#tipo_novo_item').html($tipo);
         })
         .error(function(e){
             console.log(e);
         });
     }
+}
+
+function carregaDadosConfig(){ //carrega tipo da section configura estoque
+    var $tipo;
+    $.getJSON("../CarregaDados", {opcao: 'novo-item'}).success(function(json){
+        console.log(json);
+        json.dados.forEach(function(a,index){
+            $tipo += '<tr>'+
+                '<td>'+a.nome+'</td>'+
+                '<td><button type="button" class="btn btn-vermelho btn-hover btn-xs" onclick="conf_excluir_tipo('+a.id+')" '+(a.controle != 0 ? 'disabled' : '')+'>EXCLUIR</button</td>'+
+            '</tr>';
+        })
+        $('#table-tipo-material tbody').html($tipo);
+    })
+    .error(function(e){
+        console.log(e);
+    });
+}
+function conf_excluir_tipo(id){
+    $.getJSON("../CarregaDados", {opcao: 'exclui-tipo-material', id:id}).success(function(json){
+        //console.log(json);
+        alert("Tipo de Material excluído com sucesso!");
+        carregaDadosConfig();
+    })
+    .error(function(e){
+        console.log(e);
+    });
 }
 
 $(function(){
@@ -271,42 +338,73 @@ $(function(){
 
     //colocar função para apenas numero e mascara para valor
 
+//########## INICIO FUNÇÕES PARA SECTION NOVO ITEM #########
     $("#gravar_novo_item").click(function(){
-        var nome = preenchimentoObrigatorio('nome_novo_item',1);
-        var tipo = preenchimentoObrigatorio('tipo_novo_item',2);
-        var descricao = preenchimentoObrigatorio('descricao_novo_item',1);
-        var marca = $('#marca_novo_item').val();
-        var preco = $('#preco_novo_item').val();
-        var qtde = $('#quantidade_novo_item').val();
-        var qtde_minima = $('#qtde_minima_novo_item').val();
-        var qtde_maxima = $('#qtde_maxima_novo_item').val();
+        var $nome = preenchimentoObrigatorio('nome_novo_item',1);
+        var $tipo = preenchimentoObrigatorio('tipo_novo_item',2);
+        var $descricao = preenchimentoObrigatorio('descricao_novo_item',1);
+        var $marca = $('#marca_novo_item').val();
+        var $preco = $('#preco_novo_item').val();
+        var $qtde = $('#quantidade_novo_item').val();
+        var $qtde_minima = $('#qtde_minima_novo_item').val();
+        var $qtde_maxima = $('#qtde_maxima_novo_item').val();
         
-        if(nome == false || tipo == false || descricao == false){
+        if($nome == false || $tipo == false || $descricao == false){
             return false;
         }
         else{
-            $.getJSON("../CarregaDados", {opcao: 'grava-item', nome:nome, tipo:tipo, descr:descricao, marca:marca, preco:preco, qtde:qtde, qtdeMin:qtde_minima, qtdeMax:qtde_maxima})
+            $.getJSON("../CarregaDados", {opcao: 'grava-item', nome:$nome, tipo:$tipo, descr:$descricao, marca:$marca, preco:$preco, qtde:$qtde, qtdeMin:$qtde_minima, qtdeMax:$qtde_maxima})
             .success(function(json){
-                console.log(json);
-        
+                //console.log(json);
                 if(json == '1'){
                     alert("Item gravado com sucesso!!!");
                     $("#limpar_novo_item").click();
                 }
-                
-                
             })
             .error(function(e){
                 console.log(e);
             });
         }
-  
     });
     
     $("#limpar_novo_item").click(function(){
        $("#nome_novo_item, #descricao_novo_item, #marca_novo_item, #preco_novo_item, #quantidade_novo_item, #qtde_minima_novo_item, #qtde_maxima_novo_item").val("");
        $("#tipo_novo_item").val('-1');
     });
+//########## FIM FUNÇÕES PARA SECTION NOVO ITEM #########
+
+//########## INICIO FUNÇÕES PARA SECTION CONFIGURA ESTOQUE #########
+    $("#gravar_tipo_material").click(function(){
+        var $tipo_material = $('#conf_tipo_material').val();
+        
+        if($tipo_material == false || $tipo_material == 0){
+            alert('Informe o Tipo de Material');
+            $('#conf_tipo_material').focus();
+            return false;
+        }
+        else{
+            $.getJSON("../CarregaDados", {opcao: 'grava-tipo-material', tipo_material:$tipo_material})
+            .success(function(json){
+               console.log(json);
+                if(json == '1'){
+                    alert("Tipo de Material gravado com sucesso!!!");
+                    $("#conf_tipo_material").val('');
+                    carregaDadosConfig();
+                }
+                else if(json == '2'){
+                    alert("Tipo de Material já existe!");
+                    $("#conf_tipo_material").val('').focus();
+                }
+            })
+            .error(function(e){
+                console.log(e);
+            });
+        }
+    });
+
+//########## FIM FUNÇÕES PARA SECTION CONFIGURA ESTOQUE #########
+
+
 });
 
 </script>

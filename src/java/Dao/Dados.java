@@ -40,31 +40,92 @@ public class Dados {
         return resp;
     }
     
-    
-    /*
-    public void CarregaTipo(){
+    public String inserirTipoMaterial(String tipo_material){
+        String resp;
         try{
             Connection con = Conecta.getConexao();
-            String sql = "SELECT id_tipo, nome_tipo FROM tipo_item ORDER BY nome_tipo";
+            
+            String sqlConsulta = "SELECT nome_tipo FROM tipo_item WHERE nome_tipo = ?";
+            PreparedStatement consulta = con.prepareStatement(sqlConsulta);
+            consulta.setString(1, tipo_material);
+            ResultSet r = consulta.executeQuery();
+            String controle = "";
+            while(r.next()){
+                controle = r.getString("nome_tipo");
+            }
+            if(controle.equalsIgnoreCase(tipo_material)){
+                resp = "2";//já existe
+            }
+            else{
+           
+                String sql = "INSERT INTO tipo_item (nome_tipo) VALUES (?)";
+                PreparedStatement pstm = con.prepareStatement(sql);
+
+                pstm.setString(1, tipo_material);
+
+                pstm.executeUpdate();
+                pstm.close();
+                con.close();
+                resp = "1";//cadastrado com sucesso
+            }
+
+        }catch(Exception ex){
+            resp = "Erro "+ex.getMessage();
+        }        
+        return resp;
+    }
+    
+    public String excluirTipoMaterial(int id){
+        String resp;
+        try{
+            Connection con = Conecta.getConexao();
+            
+            String sql = "DELETE FROM tipo_item WHERE id_tipo = ?";
+            PreparedStatement pstm = con.prepareStatement(sql);
+            
+            pstm.setInt(1, id);
+            
+            pstm.executeUpdate();
+            pstm.close();
+            con.close();
+            resp = "1";//excluido com sucesso
+            
+        }catch(Exception ex){
+            resp = "Erro "+ex.getMessage();
+        }        
+        return resp;
+    }
+    
+    public String CarregaTipo(){
+        String resp;
+        try{
+            Connection con = Conecta.getConexao();
+            String sql = "SELECT id_tipo, nome_tipo, COUNT(i.id_item) 'controle' " +
+                            "FROM tipo_item ti " +
+                            "LEFT JOIN item i ON ti.id_tipo=i.tipo_item_id_tipo " +
+                            "GROUP BY id_tipo, nome_tipo " +
+                            "ORDER BY nome_tipo";
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-               
+
             JSONObject json = new JSONObject();
             JSONArray array = new JSONArray();
             while(rs.next()){
                 JSONObject item = new JSONObject();
                 item.put("id", rs.getInt("id_tipo"));
-                item.put("nome", rs.getString("id_tipo"));
+                item.put("nome", rs.getString("nome_tipo"));
+                item.put("controle", rs.getString("controle"));
                 array.add(item);  
             }
             json.put("dados", array);
+            resp = json.toString();
         }catch(Exception ex){
-            //json = null;
-        }
-        //print.out(json);
+            resp = "Erro "+ex.getMessage();
+        }       
+        return resp;
     }
     
-    
+    /*
     public ArrayList<Aluno> getAlunos(){
         ArrayList<Aluno> lista = new ArrayList<>();
         try{

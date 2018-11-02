@@ -24,8 +24,7 @@ $('#qtde_minima_novo_item, #qtde_maxima_novo_item, #quantidade_novo_item').keyup
   $(this).val(this.value.replace(/\D/g, ''));
 });
 
+//Mascara para moeda
 $(function() {
-
   $('#preco_novo_item').mask('#.##0,00', {reverse: true});
-
 })
