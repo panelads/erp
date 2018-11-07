@@ -22,7 +22,7 @@
                 <li class="li-estoque-home"><a href="#estoque">Estoque</a></li>
                 <div class="menuDown-estoque">
                     <li><a onclick="mostraConteudo('novo-item'); carregaDados('novo-item')">Novo Item</a></li>
-                    <li><a onclick="mostraConteudo('estoque-atual')">Estoque Atual</a></li>
+                    <li><a onclick="mostraConteudo('estoque-atual'); carregaDados('estoque-atual')">Estoque Atual</a></li>
                     <li><a onclick="mostraConteudo('suprimento')">Suprimento</a></li>
                     <li><a onclick="mostraConteudo('separacao')">Separação</a></li>
                     <li><a onclick="mostraConteudo('reposicionar')">Reposicionar</a></li>
@@ -99,6 +99,13 @@
                             <td colspan="3"><input type="text" class="form-control" id="marca_novo_item" placeholder="Marca do Produto" novo-item></td>
                         </tr>
                         <tr>
+                            <td><label for="local_fisico_novo_item">Local Fisíco</label></td>
+                            <td colspan="3">
+                                <select class="form-control select2" id="local_fisico_novo_item">
+                                </select>
+                            </td>
+                        </tr>                        
+                        <tr>
                             <td><label for="preco_novo_item">Preço</label></td>
                             <td><input type="text" class="form-control" id="preco_novo_item" placeholder="Preço do Produto" novo-item></td>
                             <td><label for="quantidade_novo_item">Quantidade</label></td>
@@ -127,59 +134,46 @@
     <section id="estoque-atual" class="container-estoque">
         <div class="col-md-12">
             <div class="border-titulo">
-                <p class="page-btn text-right pr-15">
-                    <a href="gerenciar-registro-fiscal-entrada.html" class="btn btn-verde btn-hover mr-10">NOVO REGISTRO</a>
-                    <a href="#" onClick="popup_filtrar()" class="btn btn-amarelo btn-hover">FILTRAR</a>
-                </p>
-                <h2>Novo Item</h2>
+                <h2>Estoque Atual</h2>
                 <br>
                 <div class="col-md-12 p-30 table-responsive">
-                    <table id="frm" class="table table-striped table-bordered">
+                    <table class="table table-bordered" style="background: #fff">
+                        <tr>
+                            <th colspan="4">Filtros</th>
+                        </tr>
+                        <tr>
+                            <th><label for="codigo_estoque_atual">Código</label></th>
+                            <td><input type="text" class="form-control" id="codigo_estoque_atual"></td>
+                            <th><label for="descricao_estoque_atual">Descrição</th>
+                            <td><input type="text" class="form-control" id="descricao_estoque_atual"></td>
+                        </tr>    
+                        <tr>
+                            <th><label for="marca_estoque_atual">Marca</label></th>
+                            <td><input type="text" class="form-control" id="marca_estoque_atual"></td>
+                            <th><label for="tipo_estoque_atual">Categoria</label></th>
+                            <td>
+                                <select class="form-control select2" id="tipo_estoque_atual">
+                                </select>
+                            </td>
+                        </tr> 
+                        <tr>
+                            <th colspan="4"><button type="button" class="pull-right btn btn-azul btn-hover mr-10" id="buscar_estoque_atual">BUSCAR</button></th>
+                        </tr>
+                    </table>
+                    
+                    <table id="table-estoque-atual" class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Data de Emissão</th>
-                                <th>Destinário</th>
-                                <th>CPF/CNPJ</th>
-                                <th>Natureza da Operação</th>
+                                <th>Código</th>
+                                <th>Produto</th>
+                                <th>Marca</th>
+                                <th>Tipo de Material</th>
+                                <th colspan="2">Estoque</th>
+                                <th>Local Fisíco</th>
+                                <!--<th>Alterar</th>-->
                             </tr>
                         </thead>
                         <tbody>
-                            <tr onclick="window.location='gerenciar-registro-fiscal-entrada.html'">
-                                <td>#0001</td>
-                                <td>01/01/2018</td>
-                                <td>TESTES LTDA</td>
-                                <td>111.111.111-11</td>
-                                <td>Venda</td>
-                            </tr>
-                            <tr onclick="window.location='gerenciar-registro-fiscal-entrada.html'">
-                                <td>#0002</td>
-                                <td>02/02/2018</td>
-                                <td>TESTES LTDA</td>
-                                <td>222.222.222-22</td>
-                                <td>Compra</td>
-                            </tr>
-                            <tr onclick="window.location='gerenciar-registro-fiscal-entrada.html'">
-                                <td>#0003</td>
-                                <td>03/03/2018</td>
-                                <td>TESTES LTDA</td>
-                                <td>333.333.333-33</td>
-                                <td>Venda</td>
-                            </tr>
-                            <tr onclick="window.location='gerenciar-registro-fiscal-entrada.html'">
-                                <td>#0004</td>
-                                <td>04/04/2018</td>
-                                <td>TESTES LTDA</td>
-                                <td>444.444.444-44</td>
-                                <td>Venda</td>
-                            </tr>
-                            <tr onclick="window.location='gerenciar-registro-fiscal-entrada.html'">
-                                <td>#0005</td>
-                                <td>05/05/2018</td>
-                                <td>TESTES LTDA</td>
-                                <td>555.555.555-55</td>
-                                <td>Venda</td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -210,7 +204,7 @@
                             <td><button type="button" class="btn btn-verde btn-hover mr-10" id="gravar_tipo_material">GRAVAR</button></td>
                         </tr>
                         <tr>
-                            <td colspan="3">Tipo(s) de Material Cadastrdo(s)</td
+                            <td colspan="3">Tipo(s) de Material Cadastrado(s)</td
                         </tr>
                         <tr>
                             <td colspan="3">
@@ -289,14 +283,59 @@ function carregaDados(id){
     if(id == 'novo-item'){
         var $tipo = '<option value="-1">Carregando...</option>';
         $('#tipo_novo_item').html($tipo);
+        var $local = '<option value="-1">Carregando...</option>';
+        $('#local_fisico_novo_item').html($local);
 
         $.getJSON("../CarregaDados", {opcao: id}).success(function(json){
-            console.log(json);
+            //console.log(json);
             $tipo = '<option value="-1">Selecione o tipo</option>';
             json.dados.forEach(function(a,index){
                 $tipo += '<option value="'+a.id+'">'+a.nome+'</option>';
             })
             $('#tipo_novo_item').html($tipo);
+
+            $local = '<option value="-1">Selecione o Local Fisíco</option>';
+            json.locais.forEach(function(a,index){
+                $local += '<option value="'+a.id_local+'">'+a.local+'</option>';
+            })
+            $('#local_fisico_novo_item').html($local);
+        })
+        .error(function(e){
+            console.log(e);
+        });
+    }
+    else if(id == 'estoque-atual'){
+        var $estoque;
+        $.getJSON("../CarregaDados", {opcao: id}).success(function(json){
+            console.log(json);
+
+            json.item.forEach(function(a,index){
+                $estoque += '<tr>'+
+                    '<td>'+a.id_item+'</td>'+
+                    '<td>'+a.nome+'</td>'+
+                    '<td>'+a.marca+'</td>'+
+                    '<td>'+a.nome_tipo+'</td>'+
+                    '<td>'+a.qtde+'</td>'+
+                    '<td style="text-align:center"><i class="fa fa-check-circle" style="color: green"></i></td>'+
+                    '<td>'+a.local_fisico+'</td>'+
+                    //'<td><button type="button" class="btn btn-azul btn-hover btn-xs" onclick=\'popAlteraEstoqueAtual('+a.id_item+', "'+a.nome+'", "'+a.marca+'", '+a.nome_tipo+', '+a.qtde+', '+a.local_fisico+')\'>Alterar</button></td>'+
+                '</tr>';
+            })
+            $('#table-estoque-atual tbody').html($estoque);
+
+        })
+        .error(function(e){
+            console.log(e);
+        });
+        
+        $.getJSON("../CarregaDados", {opcao: 'novo-item'}).success(function(json){
+            //console.log(json);
+            $tipo = '<option value="-1">Selecione o tipo</option>';
+            json.dados.forEach(function(a,index){
+                $tipo += '<option value="'+a.id+'">'+a.nome+'</option>';
+            })
+            $('#tipo_estoque_atual').html($tipo);
+
         })
         .error(function(e){
             console.log(e);
@@ -311,7 +350,7 @@ function carregaDadosConfig(){ //carrega tipo da section configura estoque
         json.dados.forEach(function(a,index){
             $tipo += '<tr>'+
                 '<td>'+a.nome+'</td>'+
-                '<td><button type="button" class="btn btn-vermelho btn-hover btn-xs" onclick="conf_excluir_tipo('+a.id+')" '+(a.controle != 0 ? 'disabled' : '')+'>EXCLUIR</button</td>'+
+                '<td><button type="button" class="btn btn-vermelho btn-hover btn-xs" onclick="conf_excluir_tipo('+a.id+')" '+(a.controle != 0 ? 'disabled' : '')+'>'+(a.controle != 0 ? 'TIPO VINCULADO AO ITEM' : 'EXCLUIR')+'</button</td>'+
             '</tr>';
         })
         $('#table-tipo-material tbody').html($tipo);
@@ -344,6 +383,7 @@ $(function(){
         var $tipo = preenchimentoObrigatorio('tipo_novo_item',2);
         var $descricao = preenchimentoObrigatorio('descricao_novo_item',1);
         var $marca = $('#marca_novo_item').val();
+        var $local_fisico = preenchimentoObrigatorio('local_fisico_novo_item',2);
         var $preco = $('#preco_novo_item').val();
         var $qtde = $('#quantidade_novo_item').val();
         var $qtde_minima = $('#qtde_minima_novo_item').val();
@@ -353,7 +393,7 @@ $(function(){
             return false;
         }
         else{
-            $.getJSON("../CarregaDados", {opcao: 'grava-item', nome:$nome, tipo:$tipo, descr:$descricao, marca:$marca, preco:$preco, qtde:$qtde, qtdeMin:$qtde_minima, qtdeMax:$qtde_maxima})
+            $.getJSON("../CarregaDados", {opcao: 'grava-item', nome:$nome, tipo:$tipo, descr:$descricao, marca:$marca, local_fisico:$local_fisico, preco:$preco, qtde:$qtde, qtdeMin:$qtde_minima, qtdeMax:$qtde_maxima})
             .success(function(json){
                 //console.log(json);
                 if(json == '1'){
@@ -369,7 +409,7 @@ $(function(){
     
     $("#limpar_novo_item").click(function(){
        $("#nome_novo_item, #descricao_novo_item, #marca_novo_item, #preco_novo_item, #quantidade_novo_item, #qtde_minima_novo_item, #qtde_maxima_novo_item").val("");
-       $("#tipo_novo_item").val('-1');
+       $("#tipo_novo_item, #local_fisico_novo_item").val('-1');
     });
 //########## FIM FUNÇÕES PARA SECTION NOVO ITEM #########
 
@@ -403,6 +443,43 @@ $(function(){
     });
 
 //########## FIM FUNÇÕES PARA SECTION CONFIGURA ESTOQUE #########
+
+//########## INICIO FUNÇÕES PARA SECTION ESTOQUE ATUAL #########
+    $('#buscar_estoque_atual').click(function(){
+        var $codigo = $('#codigo_estoque_atual').val();
+        var $descricao = $('#descricao_estoque_atual').val();
+        var $marca = $('#marca_estoque_atual').val();
+        var $tipo_material = $('#tipo_estoque_atual').val();
+        $tipo_material = $tipo_material == '-1' ? '' : $tipo_material;
+        
+        if($codigo == '' && $descricao == '' && $marca == '' && $tipo_material == '-1'){
+            carregaDados('estoque-atual');
+        }
+        else{
+            $.getJSON("../CarregaDados", {opcao: 'busca-estoque-atual', codigo:$codigo, descricao:$descricao, marca:$marca, tipo_material:$tipo_material})
+            .success(function(json){
+               var $estoque; 
+               console.log(json);
+                json.item.forEach(function(a,index){
+                    $estoque += '<tr>'+
+                        '<td>'+a.id_item+'</td>'+
+                        '<td>'+a.nome+'</td>'+
+                        '<td>'+a.marca+'</td>'+
+                        '<td>'+a.nome_tipo+'</td>'+
+                        '<td>'+a.qtde+'</td>'+
+                        '<td style="text-align:center"><i class="fa fa-check-circle" style="color: green"></i></td>'+
+                        '<td>'+a.local_fisico+'</td>'+
+                        //'<td><button type="button" class="btn btn-azul btn-hover btn-xs">Alterar</button></td>'+
+                    '</tr>';
+                })
+                $('#table-estoque-atual tbody').html($estoque);
+            })
+            .error(function(e){
+                console.log(e);
+            });
+        }
+    });
+//########## FIM FUNÇÕES PARA SECTION ESTOQUE ATUL #########
 
 
 });

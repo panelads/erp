@@ -477,6 +477,9 @@ ul.lista-notasfiscais li:hover{
 .btn-verde { background: #4ac464; border: 1px solid #2e9143; }
 .btn-verde:hover { background: #2e9143; }
 
+.btn-azul { background: #4893be; border: 1px solid #4284aa; }
+.btn-azul:hover { background: #4284aa; }
+
 .btn-amarelo { background: #d3b050; border: 1px solid #af903b; }
 .btn-amarelo:hover { background: #af903b; }
 

@@ -12,12 +12,12 @@ package Basic;
 public class NovoItem {
     private String nome, marca, descricao;
     private Double preco;
-    private int qtde, qtdeMin, qtdeMax, tipo;
+    private int qtde, qtdeMin, qtdeMax, tipo, localFisico;
 
     public NovoItem() {
     }
     
-    public NovoItem(String nome, String marca, String descricao, Double preco, int qtde, int qtdeMin, int qtdeMax, int tipo) {
+    public NovoItem(String nome, String marca, String descricao, Double preco, int qtde, int qtdeMin, int qtdeMax, int tipo, int localFisico) {
         this.nome = nome;
         this.marca = marca;
         this.descricao = descricao;
@@ -26,6 +26,7 @@ public class NovoItem {
         this.qtdeMin = qtdeMin;
         this.qtdeMax = qtdeMax;
         this.tipo = tipo;
+        this.localFisico = localFisico;
     }
     
     
@@ -140,6 +141,20 @@ public class NovoItem {
      */
     public void setTipo(int tipo) {
         this.tipo = tipo;
+    }
+
+    /**
+     * @return the localFisico
+     */
+    public int getLocalFisico() {
+        return localFisico;
+    }
+
+    /**
+     * @param localFisico the localFisico to set
+     */
+    public void setLocalFisico(int localFisico) {
+        this.localFisico = localFisico;
     }
     
     

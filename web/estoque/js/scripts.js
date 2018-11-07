@@ -20,7 +20,7 @@ function preenchimentoObrigatorio(id, tipo){
 }
 
 //apenas numeros
-$('#qtde_minima_novo_item, #qtde_maxima_novo_item, #quantidade_novo_item').keyup(function() {
+$('#qtde_minima_novo_item, #qtde_maxima_novo_item, #quantidade_novo_item, #codigo_estoque_atual').keyup(function() {
   $(this).val(this.value.replace(/\D/g, ''));
 });
 
@@ -28,3 +28,24 @@ $('#qtde_minima_novo_item, #qtde_maxima_novo_item, #quantidade_novo_item').keyup
 $(function() {
   $('#preco_novo_item').mask('#.##0,00', {reverse: true});
 })
+
+function fecha_popup(){
+    $("#popup").html("");
+}
+
+function popAlteraEstoqueAtual(){
+    $("#popup").html("");
+    var conteudo = "<div id='myModal fade' class='modal'>"+
+        "<div class='modal-content' style='border-radius:10px; width: 80%'>"+
+            "<span class='close' onClick='fecha_popup()'>&times;</span>"+
+            "<h3>ALTERAR ITEM</h3>"+
+            "<table>"+
+                "<tr>"+
+                    "<td></td>"+
+                "</tr>"+
+            "</table>"+
+            "<div class='clearfix'></div>"+
+        "</div>"+
+    "</div>";
+    $("#popup").html(conteudo);
+}

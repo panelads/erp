@@ -30,9 +30,9 @@ public class CarregaDados extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             //recuperar informação que iremos submeter
             String opcao = request.getParameter("opcao");
+            Dados dados = new Dados();
 
             if(opcao.equals("novo-item")){
-                Dados dados = new Dados();
                 out.print(dados.CarregaTipo());
             }
             else if(opcao.equals("grava-item")){
@@ -45,18 +45,26 @@ public class CarregaDados extends HttpServlet {
                 item.setQtdeMin(Integer.parseInt(request.getParameter("qtdeMin")));
                 item.setQtdeMax(Integer.parseInt(request.getParameter("qtdeMax")));
                 item.setTipo(Integer.parseInt(request.getParameter("tipo")));
-                Dados dados = new Dados();
+                item.setLocalFisico(Integer.parseInt(request.getParameter("local_fisico")));
                 out.print(dados.inserirNovoItem(item));
             }
             else if(opcao.equals("grava-tipo-material")){
                 String tipo_material = request.getParameter("tipo_material");
-                Dados dados = new Dados();
                 out.print(dados.inserirTipoMaterial(tipo_material));
             }
             else if(opcao.equals("exclui-tipo-material")){
                 int id = Integer.parseInt(request.getParameter("id"));
-                Dados dados = new Dados();
                 out.print(dados.excluirTipoMaterial(id));
+            }
+            else if(opcao.equals("estoque-atual")){
+                out.print(dados.CarregaEstoqueAtual());
+            }
+            else if(opcao.equals("busca-estoque-atual")){
+                String codigo = request.getParameter("codigo");
+                String descricao = request.getParameter("descricao");
+                String marca = request.getParameter("marca");
+                String tipo_material = request.getParameter("tipo_material");
+                out.print(dados.BuscaEstoqueAtual(codigo, descricao, marca, tipo_material));
             }
                     
         }
